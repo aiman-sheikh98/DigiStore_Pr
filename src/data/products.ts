@@ -1,4 +1,3 @@
-
 import { Product } from "@/types";
 
 // Mock product data
@@ -68,6 +67,50 @@ export const products: Product[] = [
     featured: false,
     creator: "Social Media Pros",
     rating: 4.5
+  },
+  {
+    id: "7",
+    title: "Digital Marketing Toolkit",
+    description: "Essential tools and templates for digital marketing success, including social media calendars and analytics dashboards.",
+    price: 69.99,
+    category: "tools",
+    imageSrc: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1115&q=80",
+    featured: false,
+    creator: "Marketing Masters",
+    rating: 4.7
+  },
+  {
+    id: "8",
+    title: "UI Design Workshop",
+    description: "Comprehensive UI design course covering principles, tools, and best practices for modern web and mobile interfaces.",
+    price: 129.99,
+    category: "courses",
+    imageSrc: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+    featured: true,
+    creator: "Design Academy Pro",
+    rating: 4.9
+  },
+  {
+    id: "9",
+    title: "Video Editing Pro Course",
+    description: "Master video editing with this comprehensive course covering industry-standard tools and techniques.",
+    price: 149.99,
+    category: "courses",
+    imageSrc: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+    featured: false,
+    creator: "Video Pro Academy",
+    rating: 4.8
+  },
+  {
+    id: "10",
+    title: "Marketing Analytics Dashboard",
+    description: "Professional dashboard templates for tracking and analyzing marketing performance metrics.",
+    price: 79.99,
+    category: "templates",
+    imageSrc: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+    featured: true,
+    creator: "Analytics Pro",
+    rating: 4.6
   }
 ];
 

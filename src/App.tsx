@@ -25,6 +25,9 @@ const App = () => (
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:id" element={<ProductDetail />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/account" element={<NotFound />} />
+            <Route path="/wishlist" element={<NotFound />} />
+            <Route path="/support" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
