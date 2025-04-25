@@ -13,6 +13,7 @@ import { Search, Filter } from "lucide-react";
 const ProductsPage = () => {
   const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get("category");
+  const searchParam = searchParams.get("search");
   
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -30,6 +31,13 @@ const ProductsPage = () => {
   }, [categoryParam]);
 
   useEffect(() => {
+    // Set search query from URL parameter
+    if (searchParam) {
+      setSearchQuery(searchParam);
+    }
+  }, [searchParam]);
+
+  useEffect(() => {
     // Filter products based on search and category
     let result = products;
     
@@ -42,7 +50,8 @@ const ProductsPage = () => {
     if (searchQuery) {
       result = result.filter(product => 
         product.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        product.description.toLowerCase().includes(searchQuery.toLowerCase())
+        product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
     

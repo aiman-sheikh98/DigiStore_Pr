@@ -1,13 +1,22 @@
 
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { Search, ShoppingCart, User, Heart, Home, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Command, CommandInput } from "@/components/ui/command";
+import { getAllProducts } from "@/data/products";
 
 export function Navbar() {
   const { cartCount } = useCart();
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
+  };
 
   return (
     <nav className="w-full bg-white shadow-sm sticky top-0 z-50">
@@ -17,14 +26,23 @@ export function Navbar() {
             DigitalStore
           </Link>
           
-          <div className="hidden md:flex relative max-w-md w-full">
+          <form onSubmit={handleSearch} className="hidden md:flex relative max-w-md w-full">
             <Input
               type="search"
               placeholder="Search products..."
               className="w-full pr-10"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-          </div>
+            <Button 
+              type="submit" 
+              variant="ghost" 
+              size="icon" 
+              className="absolute right-0 top-0"
+            >
+              <Search className="h-4 w-4 text-gray-400" />
+            </Button>
+          </form>
         </div>
         
         <div className="flex items-center space-x-2">
