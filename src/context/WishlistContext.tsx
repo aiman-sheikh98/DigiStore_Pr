@@ -1,9 +1,9 @@
-
 import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './AuthContext';
 import { Product } from '@/types';
 import { toast } from '@/components/ui/use-toast';
+import { getProductById } from '@/data/products';
 
 interface WishlistContextProps {
   wishlist: Product[];
