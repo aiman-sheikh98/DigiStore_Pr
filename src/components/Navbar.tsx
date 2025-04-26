@@ -2,14 +2,16 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+import { useWishlist } from "@/context/WishlistContext";
 import { Search, ShoppingCart, User, Heart, Home, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Command, CommandInput } from "@/components/ui/command";
-import { getAllProducts } from "@/data/products";
 
 export function Navbar() {
   const { cartCount } = useCart();
+  const { user, signOut } = useAuth();
+  const { wishlist } = useWishlist();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -59,8 +61,13 @@ export function Navbar() {
           </Link>
 
           <Link to="/wishlist">
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="relative">
               <Heart className="h-5 w-5" />
+              {wishlist.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-digital-blue text-white rounded-full h-5 w-5 flex items-center justify-center text-xs font-bold">
+                  {wishlist.length}
+                </span>
+              )}
             </Button>
           </Link>
 
@@ -75,11 +82,17 @@ export function Navbar() {
             </Button>
           </Link>
           
-          <Link to="/account">
-            <Button variant="ghost" size="icon">
+          {user ? (
+            <Button variant="ghost" size="icon" onClick={() => signOut()}>
               <User className="h-5 w-5" />
             </Button>
-          </Link>
+          ) : (
+            <Link to="/auth">
+              <Button variant="ghost" size="icon">
+                <User className="h-5 w-5" />
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </nav>
