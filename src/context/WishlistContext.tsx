@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './AuthContext';
@@ -49,15 +50,17 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
 
   const fetchWishlist = async () => {
     try {
+      if (!user) return;
+      
       const { data: wishlistItems, error } = await supabase
         .from('wishlist_items')
         .select('product_id')
-        .eq('user_id', user?.id);
+        .eq('user_id', user.id);
 
       if (error) throw error;
 
       const productIds = wishlistItems.map(item => item.product_id);
-      // Assuming you have a function to get products by IDs from your products data
+      // Get products by IDs from your products data
       const products = productIds.map(id => {
         const product = getProductById(id);
         return product;
@@ -65,11 +68,7 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
 
       setWishlist(products);
     } catch (error: any) {
-      toast({ 
-        title: "Error", 
-        description: "Failed to fetch wishlist", 
-        variant: "destructive" 
-      });
+      console.error("Failed to fetch wishlist:", error.message);
     }
   };
 
@@ -95,9 +94,10 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
         description: `${product.title} has been added to your wishlist` 
       });
     } catch (error: any) {
+      console.error("Failed to add to wishlist:", error.message);
       toast({ 
         title: "Error", 
-        description: error.message, 
+        description: "Failed to add item to wishlist", 
         variant: "destructive" 
       });
     }
@@ -120,9 +120,10 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
         description: "Item has been removed from your wishlist" 
       });
     } catch (error: any) {
+      console.error("Failed to remove from wishlist:", error.message);
       toast({ 
         title: "Error", 
-        description: error.message, 
+        description: "Failed to remove item from wishlist", 
         variant: "destructive" 
       });
     }
