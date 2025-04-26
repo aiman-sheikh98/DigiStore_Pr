@@ -2,11 +2,14 @@
 import React from "react";
 import { Product } from "@/types";
 import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
+import { useAuth } from "@/context/AuthContext";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ShoppingCart, Star } from "lucide-react";
+import { ShoppingCart, Star, Heart } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
 
 interface ProductCardProps {
   product: Product;
@@ -14,15 +17,47 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { addItem } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const { user } = useAuth();
+  const isProductInWishlist = isInWishlist(product.id);
+
+  const handleWishlistClick = () => {
+    if (!user) {
+      toast({
+        title: "Please sign in",
+        description: "You need to be signed in to add items to your wishlist",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (isProductInWishlist) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
+  };
 
   return (
     <Card className="overflow-hidden flex flex-col h-full transition-all hover:shadow-md">
-      <div className="aspect-video w-full overflow-hidden">
+      <div className="aspect-video w-full overflow-hidden relative">
         <img 
           src={product.imageSrc} 
           alt={product.title}
           className="w-full h-full object-cover transition-transform hover:scale-105"
         />
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute top-2 right-2 bg-white/80 hover:bg-white"
+          onClick={handleWishlistClick}
+        >
+          <Heart
+            className={`h-5 w-5 ${
+              isProductInWishlist ? "fill-digital-blue text-digital-blue" : ""
+            }`}
+          />
+        </Button>
       </div>
       <CardHeader className="pb-1">
         {product.featured && (

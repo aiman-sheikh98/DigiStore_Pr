@@ -7,6 +7,7 @@ import { useWishlist } from "@/context/WishlistContext";
 import { Search, ShoppingCart, User, Heart, Home, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NotificationsPopover } from "./NotificationsPopover";
 
 export function Navbar() {
   const { cartCount } = useCart();
@@ -49,7 +50,7 @@ export function Navbar() {
         
         <div className="flex items-center space-x-2">
           <Link to="/">
-            <Button variant="ghost" size="icon" className="relative">
+            <Button variant="ghost" size="icon">
               <Home className="h-5 w-5" />
             </Button>
           </Link>
@@ -59,6 +60,8 @@ export function Navbar() {
               <MessageSquare className="h-5 w-5" />
             </Button>
           </Link>
+
+          <NotificationsPopover />
 
           <Link to="/wishlist">
             <Button variant="ghost" size="icon" className="relative">
