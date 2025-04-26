@@ -2,13 +2,13 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './AuthContext';
-import { toast } from '@/components/ui/use-toast';
 
 interface Notification {
   id: string;
   message: string;
   read: boolean;
   created_at: string;
+  user_id: string;
 }
 
 interface NotificationContextProps {
@@ -64,8 +64,8 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
 
       if (error) throw error;
 
-      setNotifications(data);
-      setUnreadCount(data.filter(n => !n.read).length);
+      setNotifications(data || []);
+      setUnreadCount((data || []).filter(n => !n.read).length);
     } catch (error: any) {
       console.error('Error fetching notifications:', error.message);
     }
