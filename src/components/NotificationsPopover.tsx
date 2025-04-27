@@ -56,3 +56,4 @@ export function NotificationsPopover() {
       </PopoverContent>
     </Popover>
   );
+}
