@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
@@ -86,9 +85,11 @@ export function Navbar() {
           </Link>
           
           {user ? (
-            <Button variant="ghost" size="icon" onClick={() => signOut()}>
-              <User className="h-5 w-5" />
-            </Button>
+            <Link to="/profile">
+              <Button variant="ghost" size="icon">
+                <User className="h-5 w-5" />
+              </Button>
+            </Link>
           ) : (
             <Link to="/auth">
               <Button variant="ghost" size="icon">

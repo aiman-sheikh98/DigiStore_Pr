@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound";
 import CategoriesPage from "./pages/CategoriesPage";
 import AuthPage from "./pages/AuthPage";
 import WishlistPage from "./pages/WishlistPage";
+import ProfilePage from "./pages/ProfilePage";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
                   <Route path="/categories" element={<CategoriesPage />} />
                   <Route path="/auth" element={<AuthPage />} />
                   <Route path="/wishlist" element={<WishlistPage />} />
+                  <Route path="/profile" element={<ProfilePage />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </WishlistProvider>
