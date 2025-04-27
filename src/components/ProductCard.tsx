@@ -25,7 +25,7 @@ export function ProductCard({ product }: ProductCardProps) {
     if (!user) {
       toast({
         title: "Please sign in",
-        description: "You need to be signed in to add items to your wishlist",
+        description: "You need to be signed in to manage your wishlist",
         variant: "destructive"
       });
       return;
@@ -102,3 +102,4 @@ export function ProductCard({ product }: ProductCardProps) {
     </Card>
   );
 }
+
