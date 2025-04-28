@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -7,15 +6,30 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Trash2, Plus, Minus, ShoppingBag, ChevronRight, AlertCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const CartPage = () => {
   const { items, addItem, removeItem, clearCart, cartTotal } = useCart();
 
-  const handleCheckout = () => {
-    toast({
-      title: "Checkout initiated",
-      description: "This would connect to a payment processor in a real app."
-    });
+  const handleCheckout = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: { items }
+      });
+
+      if (error) throw error;
+      
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      toast({
+        title: "Checkout Error",
+        description: "There was a problem initiating checkout. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   if (items.length === 0) {
@@ -165,13 +179,13 @@ const CartPage = () => {
                   className="w-full bg-digital-blue hover:bg-digital-darkBlue mb-4"
                   onClick={handleCheckout}
                 >
-                  Checkout <ChevronRight className="h-4 w-4 ml-1" />
+                  Checkout with Stripe <ChevronRight className="h-4 w-4 ml-1" />
                 </Button>
                 
                 <div className="flex items-start text-sm text-gray-500">
                   <AlertCircle className="h-4 w-4 mr-1.5 flex-shrink-0 mt-0.5" />
                   <p>
-                    Digital products will be available for instant download after purchase.
+                    Secure payment powered by Stripe.
                   </p>
                 </div>
               </div>
