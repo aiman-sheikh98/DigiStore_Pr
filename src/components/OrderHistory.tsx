@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Package, Truck } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 interface Order {
   id: string;
@@ -106,80 +107,84 @@ export function OrderHistory() {
   };
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Order History</h2>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Order ID</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Total</TableHead>
-              <TableHead>Tracking</TableHead>
-              <TableHead></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {orders.map((order) => (
-              <>
-                <TableRow key={order.id}>
-                  <TableCell className="font-medium">{order.id.slice(0, 8)}</TableCell>
-                  <TableCell>{new Date(order.created_at).toLocaleDateString()}</TableCell>
-                  <TableCell>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
-                      {order.status}
-                    </span>
-                  </TableCell>
-                  <TableCell>${order.total_amount}</TableCell>
-                  <TableCell>
-                    {order.tracking_number ? (
-                      <div className="flex items-center gap-2">
-                        <Truck className="h-4 w-4" />
-                        {order.tracking_number}
-                      </div>
-                    ) : (
-                      <span className="text-muted-foreground text-sm">Not available</span>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => toggleOrderDetails(order.id)}
-                    >
-                      {expandedOrder === order.id ? 'Hide Details' : 'View Details'}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-                {expandedOrder === order.id && orderItems[order.id] && (
-                  <TableRow>
-                    <TableCell colSpan={6} className="bg-muted/50">
-                      <div className="p-4">
-                        <h4 className="font-medium mb-2">Order Items</h4>
-                        <div className="space-y-2">
-                          {orderItems[order.id].map((item) => (
-                            <div key={item.product_id} className="flex justify-between items-center">
-                              <div className="flex items-center gap-2">
-                                <Package className="h-4 w-4" />
-                                <span>Product ID: {item.product_id}</span>
-                              </div>
-                              <div className="flex items-center gap-4">
-                                <span>Qty: {item.quantity}</span>
-                                <span>${item.price}</span>
-                              </div>
-                            </div>
-                          ))}
+    <Card>
+      <CardHeader>
+        <CardTitle>Order History</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Order ID</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Total</TableHead>
+                <TableHead>Tracking</TableHead>
+                <TableHead></TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {orders.map((order) => (
+                <>
+                  <TableRow key={order.id}>
+                    <TableCell className="font-medium">{order.id.slice(0, 8)}</TableCell>
+                    <TableCell>{new Date(order.created_at).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
+                        {order.status}
+                      </span>
+                    </TableCell>
+                    <TableCell>${order.total_amount}</TableCell>
+                    <TableCell>
+                      {order.tracking_number ? (
+                        <div className="flex items-center gap-2">
+                          <Truck className="h-4 w-4" />
+                          {order.tracking_number}
                         </div>
-                      </div>
+                      ) : (
+                        <span className="text-muted-foreground text-sm">Not available</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => toggleOrderDetails(order.id)}
+                      >
+                        {expandedOrder === order.id ? 'Hide Details' : 'View Details'}
+                      </Button>
                     </TableCell>
                   </TableRow>
-                )}
-              </>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    </div>
+                  {expandedOrder === order.id && orderItems[order.id] && (
+                    <TableRow>
+                      <TableCell colSpan={6} className="bg-muted/50">
+                        <div className="p-4">
+                          <h4 className="font-medium mb-2">Order Items</h4>
+                          <div className="space-y-2">
+                            {orderItems[order.id].map((item) => (
+                              <div key={item.product_id} className="flex justify-between items-center">
+                                <div className="flex items-center gap-2">
+                                  <Package className="h-4 w-4" />
+                                  <span>Product ID: {item.product_id}</span>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                  <span>Qty: {item.quantity}</span>
+                                  <span>${item.price}</span>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

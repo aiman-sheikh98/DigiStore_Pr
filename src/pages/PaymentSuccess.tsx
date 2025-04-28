@@ -1,19 +1,46 @@
 
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
 
 const PaymentSuccess = () => {
   const navigate = useNavigate();
   const { clearCart } = useCart();
+  const [searchParams] = useSearchParams();
+  const { toast } = useToast();
+  const sessionId = searchParams.get("session_id");
 
   useEffect(() => {
     clearCart();
-  }, [clearCart]);
+    
+    if (sessionId) {
+      const updateOrderStatus = async () => {
+        const { error } = await supabase
+          .from("orders")
+          .update({ status: "processing" })
+          .eq("status", "pending")
+          .order("created_at", { ascending: false })
+          .limit(1);
+
+        if (error) {
+          console.error("Error updating order status:", error);
+          toast({
+            title: "Error",
+            description: "There was a problem updating your order status.",
+            variant: "destructive",
+          });
+        }
+      };
+
+      updateOrderStatus();
+    }
+  }, [clearCart, sessionId, toast]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -28,9 +55,16 @@ const PaymentSuccess = () => {
             Thank you for your purchase. Your order has been processed successfully.
           </p>
           <div className="space-x-4">
+            <Button
+              onClick={() => navigate("/profile")}
+              variant="default"
+              className="bg-digital-blue hover:bg-digital-darkBlue"
+            >
+              View Order History
+            </Button>
             <Button 
               onClick={() => navigate("/products")}
-              className="bg-digital-blue hover:bg-digital-darkBlue"
+              variant="outline"
             >
               Continue Shopping
             </Button>
