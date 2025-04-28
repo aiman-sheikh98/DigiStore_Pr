@@ -22,10 +22,10 @@ Follow these steps:
 
 ```sh
 # Step 1: Clone the repository using the project's Git URL.
-git clone 
+git clone https://github.com/aiman-sheikh98/DigiStore_Pr
 
 # Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+cd DigiStore_Pr
 
 # Step 3: Install the necessary dependencies.
 npm i
@@ -60,7 +60,7 @@ This project is built with:
 
 ## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/f09190eb-8f0c-4611-ab31-7929eede63e2) and click on Share -> Publish.
+Simply open add Your Custom domain or netlify or lovable  and click on Share -> Publish.
 
 ## Can I connect a custom domain to my Lovable project?
 
