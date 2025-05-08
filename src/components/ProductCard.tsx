@@ -21,10 +21,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const { user } = useAuth();
   const isProductInWishlist = isInWishlist(product.id);
 
-  const handleWishlistClick = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
+  const handleWishlistClick = () => {
     if (!user) {
       toast({
         title: "Please sign in",
@@ -35,9 +32,9 @@ export function ProductCard({ product }: ProductCardProps) {
     }
 
     if (isProductInWishlist) {
-      await removeFromWishlist(product.id);
+      removeFromWishlist(product.id);
     } else {
-      await addToWishlist(product);
+      addToWishlist(product);
     }
   };
 
@@ -54,7 +51,6 @@ export function ProductCard({ product }: ProductCardProps) {
           size="icon"
           className="absolute top-2 right-2 bg-white/80 hover:bg-white"
           onClick={handleWishlistClick}
-          type="button"
         >
           <Heart
             className={`h-5 w-5 ${
@@ -106,3 +102,4 @@ export function ProductCard({ product }: ProductCardProps) {
     </Card>
   );
 }
+

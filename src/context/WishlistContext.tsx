@@ -83,46 +83,16 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
     }
 
     try {
-      // Check if already in wishlist to prevent duplicates
-      const { data: existing } = await supabase
-        .from('wishlist_items')
-        .select()
-        .eq('user_id', user.id)
-        .eq('product_id', product.id)
-        .single();
-      
-      if (existing) {
-        // Already in wishlist, no need to add again
-        return;
-      }
-
       const { error } = await supabase
         .from('wishlist_items')
         .insert({ user_id: user.id, product_id: product.id });
 
       if (error) throw error;
 
-      // Add notification separately with error handling
-      try {
-        await supabase
-          .from('notifications')
-          .insert({ 
-            user_id: user.id, 
-            message: `${product.title} has been added to your wishlist` 
-          });
-      } catch (notificationError) {
-        // Log notification error but don't block the main functionality
-        console.error("Failed to create notification:", notificationError);
-      }
-
       toast({ 
         title: "Added to wishlist", 
         description: `${product.title} has been added to your wishlist` 
       });
-      
-      // Update local state
-      setWishlist(prev => [...prev, product]);
-      
     } catch (error: any) {
       console.error("Failed to add to wishlist:", error.message);
       toast({ 
@@ -149,10 +119,6 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
         title: "Removed from wishlist", 
         description: "Item has been removed from your wishlist" 
       });
-      
-      // Update local state
-      setWishlist(prev => prev.filter(product => product.id !== productId));
-      
     } catch (error: any) {
       console.error("Failed to remove from wishlist:", error.message);
       toast({ 
