@@ -23,7 +23,7 @@ const PaymentSuccess = () => {
       const updateOrderStatus = async () => {
         const { error } = await supabase
           .from("orders")
-          .update({ status: "processing" })
+          .update({ status: "booked" })
           .eq("status", "pending")
           .order("created_at", { ascending: false })
           .limit(1);
